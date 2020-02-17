@@ -1,0 +1,22 @@
+# use Python and non-root
+language: python
+
+before_install:
+  # install mdl for linting
+  - gem install mdl
+  # switch to Python 3.6.3 globally, install python dependencies
+  # Note that by default Travis CI does not currently support Python 3.7.3 through Pyenv
+  - pyenv global 3.6.3
+  - pip install --upgrade pip
+  - pip install proselint
+  - pip install pipenv
+  # do not allow Travis to use standard error for debugging purposes
+  - unset _JAVA_OPTIONS
+  # install dev dependencies with pipenv
+  - pipenv install --dev --three
+
+  script:
+  # lint the assignment's documentation
+  - mdl README.md
+  # Python: lint and run the program and then the program's checks
+  - pipenv run lint --check
